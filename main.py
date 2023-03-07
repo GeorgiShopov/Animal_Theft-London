@@ -7,6 +7,7 @@ import streamlit as st
 from geopy.geocoders import Nominatim
 import time
 
+st.set_page_config(page_title="My App")
 @st.cache_data
 def load_data():
     link="https://data.london.gov.uk/download/mps-stolen-animals-dashboard-data/5831fb56-e29f-467e-a16e-c9bcc6340468/Stolen%20Animals%20December%202023.csv"
