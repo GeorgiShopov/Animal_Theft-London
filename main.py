@@ -650,5 +650,4 @@ else:
         'Expenditure incurred and prosecutions taken under the Animal Health Act 1981. '
         'https://www.gov.uk/government/publications/section-80-report-for-2021-under-the-animal-health-act-1981'
 
-    st.write('#DataScience #DataAnalysis #DataVisualization #Dashboards #Reports \n\n#Streamlit #Python #Plotly \n\n#London #OpenData #Crime #AnimalTheft #Dashboards #PublicSafety \n\n#DataSciGoneWild')
-    
+    st.write('**#DataScience #DataAnalysis #DataVisualization #Dashboards #Reports** \n\n**#Streamlit #Python #Plotly** \n\n**#London #OpenData #Crime #AnimalTheft #Dashboards #PublicSafety** \n\n**#DataSciGoneWild**')
