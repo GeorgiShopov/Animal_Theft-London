@@ -145,8 +145,8 @@ ani = st.sidebar.selectbox('Animal',(a), help='Filter data by animal')
 
 #years slider
 from2y = st.sidebar.slider(label = 'Select a range of years',
-                    min_value=data['year'].min(), 
-                    max_value=data['year'].max(), 
+                    min_value=int(data['year'].min()), 
+                    max_value=int(data['year'].max()), 
                     value=(2015, 2023),
                     step=1,
                     help='Filter data by selecting range of years between 2010 and 2023'
