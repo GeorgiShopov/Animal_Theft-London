@@ -7,12 +7,10 @@ import streamlit as st
 from geopy.geocoders import Nominatim
 import time
 
-link="https://data.london.gov.uk/download/mps-stolen-animals-dashboard-data/5831fb56-e29f-467e-a16e-c9bcc6340468/Stolen%20Animals%20December%202023.csv"
-data=pd.DataFrame()
-data = pd.read_csv(link)
-
-@st.cache
+@st.cache_data
 def load_data():
+    link="https://data.london.gov.uk/download/mps-stolen-animals-dashboard-data/5831fb56-e29f-467e-a16e-c9bcc6340468/Stolen%20Animals%20December%202023.csv"
+    data = pd.read_csv(link)
     ###DATA###MANIPULATION
     #converting data types
     data['Count of Stolen Animals'] = data['Count of Stolen Animals'].astype(int)
@@ -64,32 +62,17 @@ a.sort()
 
 #generating geolocation data for boroughs
 #Table name "geo"
-geolocator = Nominatim(user_agent="geoapiExercises")
-latitude = []
-longitude = []
-borough_= []
+# geolocator = Nominatim(user_agent="geoapiExercises")
+# latitude = []
+# longitude = []
+# borough_= []
 bb=data['borough'].unique().tolist()
-geo=pd.DataFrame(columns=['borough','latitude','longitude'])
 
-@st.cache
-def locations():
-    for bo in data['borough'].unique().tolist():
-        borough_.append(bo)
-        latitude.append(geolocator.geocode(bo + ", London, UK").latitude)
-        longitude.append(geolocator.geocode(bo + ", London, UK").longitude)
-    geo['borough'] = borough_
-    geo['latitude'] = latitude
-    geo['longitude'] = longitude
-    return geo
+geo=pd.read_csv("LondonBoroughs.csv")
 
-with st.spinner("Loading..."):
-    geo = locations()
-
-# geo[['borough','latitude','longitude']].sample(n=4)
-del latitude,longitude
 
 #defining a function to crunch the table
-@st.cache(allow_output_mutation=True)
+@st.cache_data #(allow_output_mutation=True)
 def data_(yr=[2017,2019], borough='All', animal='All', groupby=None, agg=None):
     """
     Filter data based on year range, borough and animal type and group the filtered data by desired columns and aggregations.
@@ -171,7 +154,7 @@ if credits:
     sm2 = "[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/shopovgeorgii)"
 
     st.sidebar.write('# **Georgi Shopov**\n\n',sm1,sm2)
-    st.sidebar.image('https://github.com/GeorgiShopov/Animal_Theft-London/blob/main/default.png.')
+    st.sidebar.image('default.png.')
     sm3 = "[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/datascigonewild)"
     sm4 = "[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/datascigonewild)"
     st.sidebar.write(sm3,sm4)
@@ -435,11 +418,12 @@ map = go.Figure(go.Scattermapbox(
     lat=borough['latitude'],
     lon=borough['longitude'],
     mode='markers',
-    marker=dict(size=borough['count']/8, 
+    marker=dict(size=borough['count']/3, 
 #                 color='red',
                 color=borough['count'], 
                 colorscale='Cividis', 
-                opacity=0.9,
+                opacity=0.6,
+                # line=dict(width=2 , color='darkgrey')
                 # colorbar=dict(title='Count')
                 ),
     text=borough[['borough', 'count']].apply(lambda x: '<br>'.join(x.astype(str)), axis=1),
@@ -659,12 +643,12 @@ else:
         'The Blue Cross (https://www.bluecross.org.uk/'
         'The Battersea Dogs and Cats Home https://www.battersea.org.uk/'
         'The Animal Welfare Foundation https://www.animalwelfarefoundation.org.uk/'
-        '**extra information**'
         'Stolen Animals data https://data.london.gov.uk/dataset/mps-stolen-animals-dashboard-data'
         'The Metropolitan Police https://www.met.police.uk/'
         'Animal welfare Act 2006 https://www.legislation.gov.uk/ukpga/2006/45/contents'
         'Animal welfare Gov.uk https://www.gov.uk/guidance/animal-welfare'
-        'Expenditure incurred and prosecutions taken under the Animal Health Act 1981. https://www.gov.uk/government/publications/section-80-report-for-2021-under-the-animal-health-act-1981'
+        'Expenditure incurred and prosecutions taken under the Animal Health Act 1981. '
+        'https://www.gov.uk/government/publications/section-80-report-for-2021-under-the-animal-health-act-1981'
 
     st.write('#DataScience #DataAnalysis #DataVisualization #Dashboards #Reports \n\n#Streamlit #Python #Plotly \n\n#London #OpenData #Crime #AnimalTheft #Dashboards #PublicSafety \n\n#DataSciGoneWild')
     
